@@ -1,5 +1,15 @@
-import { mysqlTable, serial, datetime, varchar } from "drizzle-orm/mysql-core";
+import {
+  serial,
+  datetime,
+  varchar,
+  mysqlTableCreator,
+} from "drizzle-orm/mysql-core";
+import config from "../config.json";
 import { type InferModel, relations, sql } from "drizzle-orm";
+
+const mysqlTable = mysqlTableCreator(
+  (name) => `${config.dbTablePrefix}_${name}`
+);
 
 export const user = mysqlTable("user", {
   id: varchar("id", { length: 256 }).primaryKey().notNull(),
