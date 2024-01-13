@@ -34,7 +34,7 @@ npm install
 
 - `Next.js`, `Tailwind`, `Drizzle`, `tRPC`: These are already set up with the project.
 - Ensure the project is in your GitHub.
-- **PlanetScale:**
+- **PlanetScale (setting up your own database for the project):**
   1. Sign in to [PlanetScale](https://planetscale.com).
   2. Click `Create a New Database`.
   3. Select the region for your DB, ideally close to where your `Vercel` functions will be deployed.
@@ -44,6 +44,11 @@ npm install
   7. Copy the `DATABASE_URL` environment variable and paste it into your project's `.env` file.
   8. In your terminal, run `npm run dbpush` to set the database schema based on the current schema in the `drizzle/schema.ts` file.
   9. Run `npx drizzle-kit studio` in the terminal to view your database tables and data in the browser.
+- **PlanetScale (using the shared, multiproject hobbydb)**
+  1. Add the `DATABASE_URL`, `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `DATABASE_SCHEMA` environment variables needed to connect to the hobbydb on [PlanetScale](https://planetscale.com). You can pull the vars from an existing project that also uses the hobbydb or go to PlanetScale and generate a new password for this application.
+  2. Update the `dbTablePrefix` value in `config.json` with the prefix of what you want your tables to be named with in the database. Also update any other application specific configs in `config.json`.
+  3. In your terminal, run `npm run dbpush` to set the database schema based on the current schema in the `drizzle/schema.ts` file.
+  4. Run `npx drizzle-kit studio` in the terminal to view your database tables and data in the browser.
 - **Clerk:**
   1. Navigate to [Clerk](https://dashboard.clerk.com) and sign in.
   2. Add an application (you may need to create a workspace first, e.g., "Personal").
