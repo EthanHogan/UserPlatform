@@ -5,8 +5,8 @@ import { Webhook } from "svix";
 import { buffer } from "micro";
 import { db } from "drizzle/index";
 import { TRPCError } from "@trpc/server";
-import { user, message } from "drizzle/schema";
-import { type InferModel, eq } from "drizzle-orm";
+import { user, type User } from "drizzle/schema";
+import { eq, and, isNull } from "drizzle-orm";
 import { convertToSQLTimeFormat } from "~/utils/api";
 
 export const config = {
@@ -113,12 +113,13 @@ async function handleUserDeleted(event: UserWebhookEvent) {
 
   const canDelete = await userExists(data.id);
   if (!canDelete) throw new TRPCError({ code: "NOT_FOUND" });
-  await db.delete(message).where(eq(message.userId, data.id));
-  await db.delete(user).where(eq(user.id, data.id));
+  await db.update(user).set({ deletedAt: convertToSQLTimeFormat(new Date()) });
 }
 
-async function userExists(id: InferModel<typeof user>["id"]) {
-  const userWithId = await db.query.user.findFirst({ where: eq(user.id, id) });
+async function userExists(id: User["id"]) {
+  const userWithId = await db.query.user.findFirst({
+    where: and(eq(user.id, id), isNull(user.deletedAt)),
+  });
 
   return !!userWithId;
 }
