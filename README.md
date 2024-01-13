@@ -108,7 +108,9 @@ git push
 ```
 
 ## Using Clerk Webhooks to sync user data
+
 ### OLD WAY
+
 - **Ngrok:**
   You will need Ngrok to locally test your webhook endpoints and their ability to receive/handle webhook requests.
   (Clerk Webhook Integrations w/ Ngrok for testing locally)[https://ngrok.com/docs/integrations/clerk/webhooks/]
@@ -141,29 +143,31 @@ git push
   12. Create a new endpoint in Clerk ("Add Endpoint" on "Webhooks" page) with the same settings, except change the endpoint url to your production endpoint.
 
 ### NEW WAY
+
 **Vercel User Webhook Project:**
 
-  1. Navigate to https://vercel.com/ethanhogan/user-webhook/settings/environment-variables. Sign in to Vercel first if needed.
-  2. Add about 8 environment variables for your app, using the naming convention for the variables. Variable names begin with "App_" and end with the name for the variable and contain the app name between the 2. For example, if I was adding a DATABASE_URL variable for the UserPlatform application, I would add it as "App_UserPlatform_DATABASE_URL".
-  3. Make sure to include an "_AppId" variable and give it the name of your application. You will use this name when setting up the endpoint with Clerk.
+1. Navigate to https://vercel.com/ethanhogan/user-webhook/settings/environment-variables. Sign in to Vercel first if needed.
+2. Add 2 environment variables for your app, `AppId` and `CLERK_USER_EVENT_WEBHOOK_SECRET`. Use the naming convention for the variables. Variable names begin with "App\_" and end with the name for the variable and contain the app name between the 2. For example, if I was adding am AppId variable for the UserPlatform application, I would add it as "App_UserPlatform_AppId".
+3. Make sure to include an "\_AppId" variable and give it the name of your application. You will use this name when setting up the endpoint with Clerk.
 
 **Clerk:**
 
-  1. Navigate to https://dashboard.clerk.com and sign in.
-  2. Select your application.
-  3. Select "Webhooks".
-  4. Select "Add Endpoint".
-  5. Use "https://user-webhook.vercel.app/api/clerk-user-webhook?AppId=UserPlatform" url, changing out "UserPlatform" for the name of your application. This must match the "_AppId" variable added to the Vercel User Webhook project. 
-  
-  6. Select which events you would like handle in your webhook endpoint (e.g. "user.created", "user.deleted", and "user.updated").
-  7. Select "Create".
-  8. Copy the "Signing Secret" in the bottom right of the "Endpoints" tab.
-  9.  Paste this secret as the value for your "App_UserPlatform_CLERK_USER_EVENT_WEBHOOK_SECRET" environment variable in the Vercel User Platform application, replacing "UserPlatform" with the AppId of your application.
+1. Navigate to https://dashboard.clerk.com and sign in.
+2. Select your application.
+3. Select "Webhooks".
+4. Select "Add Endpoint".
+5. Use "https://user-webhook.vercel.app/api/clerk-user-webhook?AppId=UserPlatform" url, changing out "UserPlatform" for the name of your application. This must match the "\_AppId" variable added to the Vercel User Webhook project.
 
-  - Note: This environment variable is endpoint specific. So for your production endpoint, you will have a different "Signing Secret" that will need to be added to your environment variables in Vercel Settings (example url of how to get there: https://vercel.com/MyGitHubUsername/MyProjectName/settings/environment-variables).
+6. Select which events you would like handle in your webhook endpoint (e.g. "user.created", "user.deleted", and "user.updated").
+7. Select "Create".
+8. Copy the "Signing Secret" in the bottom right of the "Endpoints" tab.
+9. Paste this secret as the value for your "App_UserPlatform_CLERK_USER_EVENT_WEBHOOK_SECRET" environment variable in the Vercel User Platform application, replacing "UserPlatform" with the AppId of your application.
 
-  11. Select "Testing" tab of your Clerk endpoint, then select a supported event type to test your webhook. Click "Send Example" to test your webhook event handler.
-  12. Create a new endpoint in Clerk ("Add Endpoint" on "Webhooks" page) with the same settings, except change the endpoint url to your production endpoint.
+- Note: This environment variable is endpoint specific. So for your production endpoint, you will have a different "Signing Secret" that will need to be added to your environment variables in Vercel Settings (example url of how to get there: https://vercel.com/MyGitHubUsername/MyProjectName/settings/environment-variables).
+
+11. Select "Testing" tab of your Clerk endpoint, then select a supported event type to test your webhook. Click "Send Example" to test your webhook event handler.
+12. Create a new endpoint in Clerk ("Add Endpoint" on "Webhooks" page) with the same settings, except change the endpoint url to your production endpoint.
+
 ## Running MySQL DB locally using Docker
 
 - **Docker:**
