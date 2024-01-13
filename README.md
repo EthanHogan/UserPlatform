@@ -161,7 +161,7 @@ git push
 6. Select which events you would like handle in your webhook endpoint (e.g. "user.created", "user.deleted", and "user.updated").
 7. Select "Create".
 8. Copy the "Signing Secret" in the bottom right of the "Endpoints" tab.
-9. Paste this secret as the value for your "App_UserPlatform_CLERK_USER_EVENT_WEBHOOK_SECRET" environment variable in the Vercel User Platform application, replacing "UserPlatform" with the AppId of your application.
+9. Paste this secret as the value for your "App_UserPlatform_CLERK_USER_EVENT_WEBHOOK_SECRET" environment variable in the Vercel user-webhook application, replacing "UserPlatform" with the AppId of your application.
 
 - Note: This environment variable is endpoint specific. So for your production endpoint, you will have a different "Signing Secret" that will need to be added to your environment variables in Vercel Settings (example url of how to get there: https://vercel.com/MyGitHubUsername/MyProjectName/settings/environment-variables).
 
