@@ -9,22 +9,22 @@ import {
 import { message, user } from "drizzle/schema";
 import { desc, eq } from "drizzle-orm";
 
-// import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
-// import { Redis } from "@upstash/redis";
-// import { TRPCError } from "@trpc/server";
+import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
+import { Redis } from "@upstash/redis";
+import { TRPCError } from "@trpc/server";
 
 // Create a new ratelimiter, that allows 3 requests per 1 minute
-// const createExampleRateLimit = new Ratelimit({
-//   redis: Redis.fromEnv(),
-//   limiter: Ratelimit.slidingWindow(3, "1 m"),
-//   analytics: true,
-//   /**
-//    * Optional prefix for the keys used in redis. This is useful if you want to share a redis
-//    * instance with other applications and want to avoid key collisions. The default prefix is
-//    * "@upstash/ratelimit"
-//    */
-//   prefix: "@upstash/ratelimit",
-// });
+const createExampleRateLimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(3, "1 m"),
+  analytics: true,
+  /**
+   * Optional prefix for the keys used in redis. This is useful if you want to share a redis
+   * instance with other applications and want to avoid key collisions. The default prefix is
+   * "@upstash/ratelimit"
+   */
+  prefix: "@upstash/ratelimit",
+});
 
 export const messageRouter = createTRPCRouter({
   hello: publicProcedure
@@ -36,10 +36,10 @@ export const messageRouter = createTRPCRouter({
     }),
   helloPrivateAndRateLimitedExample: privateProcedure
     .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      // const { success } = await createExampleRateLimit.limit(ctx.userId);
+    .query(async ({ input, ctx }) => {
+      const { success } = await createExampleRateLimit.limit(ctx.userId);
 
-      // if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
+      if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
       return {
         greeting: `Hello ${input.text}`,
       };
@@ -68,14 +68,14 @@ export const messageRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.userId;
 
-      // const { success } = await createExampleRateLimit.limit(userId);
+      const { success } = await createExampleRateLimit.limit(userId);
 
-      // if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
+      if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
 
       const insertResult = await ctx.db
         .insert(message)
         .values({ text: input.content, userId: userId });
-        
+
       const newMessageId = parseInt(insertResult.insertId);
 
       const newMessage = await ctx.db.query.message.findFirst({
