@@ -1,14 +1,14 @@
-import type { Config } from "drizzle-kit";
+import { type Config } from "drizzle-kit";
+
+import { env } from "./src/env.mjs";
+
 import config from "./config.json";
-import * as dotenv from "dotenv";
-dotenv.config();
 
 export default {
-  schema: "./drizzle/schema.ts",
-  out: "./drizzle/generated",
+  schema: "./src/server/db/schema.ts",
   driver: "mysql2",
   dbCredentials: {
-    connectionString: process.env.DATABASE_URL as string,
+    uri: env.DATABASE_URL,
   },
   tablesFilter: [`${config.dbTablePrefix}_*`],
 } satisfies Config;

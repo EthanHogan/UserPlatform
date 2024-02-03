@@ -4,8 +4,13 @@ import {
   varchar,
   mysqlTableCreator,
 } from "drizzle-orm/mysql-core";
-import config from "../config.json";
-import { type InferModel, relations, sql } from "drizzle-orm";
+import config from "../../../config.json";
+import {
+  relations,
+  sql,
+  InferSelectModel,
+  InferInsertModel,
+} from "drizzle-orm";
 
 const mysqlTable = mysqlTableCreator(
   (name) => `${config.dbTablePrefix}_${name}`
@@ -23,8 +28,8 @@ export const user = mysqlTable("user", {
   deletedAt: datetime("deletedAt", { mode: "string" }),
 });
 
-export type User = InferModel<typeof user, "select">;
-export type NewUser = InferModel<typeof user, "insert">;
+export type User = InferSelectModel<typeof user>;
+export type NewUser = InferInsertModel<typeof user>;
 
 export const usersRelations = relations(user, ({ many }) => ({
   posts: many(message),
@@ -42,8 +47,8 @@ export const message = mysqlTable("message", {
   userId: varchar("userId", { length: 256 }),
 });
 
-export type Message = InferModel<typeof message, "select">;
-export type NewMessage = InferModel<typeof message, "insert">;
+export type Message = InferSelectModel<typeof message>;
+export type NewMessage = InferInsertModel<typeof message>;
 
 export const messageRelations = relations(message, ({ one }) => ({
   author: one(user, {
