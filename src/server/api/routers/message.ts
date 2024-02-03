@@ -6,7 +6,7 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 
-import { message, user } from "drizzle/schema";
+import { message, user } from "../../db/schema";
 import { desc, eq } from "drizzle-orm";
 
 import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above

@@ -16,7 +16,7 @@
  */
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 
-import { db } from "drizzle/index";
+import { db } from "../db/index";
 
 // type CreateContextOptions = Record<string, never>;
 

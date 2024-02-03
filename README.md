@@ -45,7 +45,7 @@ npm install
   8. In your terminal, run `npm run dbpush` to set the database schema based on the current schema in the `drizzle/schema.ts` file.
   9. Run `npx drizzle-kit studio` in the terminal to view your database tables and data in the browser.
 - **PlanetScale (using the shared, multiproject hobbydb)**
-  1. Add the `DATABASE_URL`, `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `DATABASE_SCHEMA` environment variables needed to connect to the hobbydb on [PlanetScale](https://planetscale.com). You can pull the vars from an existing project that also uses the hobbydb or go to PlanetScale and generate a new password for this application.
+  1. Add the `DATABASE_URL`, environment variable needed to connect to the hobbydb on [PlanetScale](https://planetscale.com). You can pull the variable from an existing project that also uses the hobbydb or go to PlanetScale and generate a new password for this application.
   2. Update the `dbTablePrefix` value in `config.json` with the prefix of what you want your tables to be named with in the database. Also update any other application specific configs in `config.json`.
   3. In your terminal, run `npm run dbpush` to set the database schema based on the current schema in the `drizzle/schema.ts` file.
   4. Run `npx drizzle-kit studio` in the terminal to view your database tables and data in the browser.
@@ -97,6 +97,12 @@ npm run dev
 
 ```sh
 npm run dbpush
+```
+
+## Viewing DB
+
+```sh
+npx drizzle-kit studio
 ```
 
 ## Deployment
