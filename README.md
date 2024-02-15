@@ -174,6 +174,30 @@ git push
 11. Select "Testing" tab of your Clerk endpoint, then select a supported event type to test your webhook. Click "Send Example" to test your webhook event handler.
 12. Create a new endpoint in Clerk ("Add Endpoint" on "Webhooks" page) with the same settings, except change the endpoint url to your production endpoint.
 
+### NEW NEW WAY
+
+**AWS Clerk User Webhook Lambda:**
+
+1. Navigate to https://us-east-1.console.aws.amazon.com/systems-manager/parameters/?region=us-east-1&tab=Table. Sign in to AWS Console first if needed.
+2. Add 2 environment variables for your app, `/clerk-user-webhook/{AppId}/TABLE_PREFIX` and `/clerk-user-webhook/{AppId}/CLERK_USER_EVENT_WEBHOOK_SECRET`, replacing {AppId} with the unique AppId that will be used by the lambda to know which app is making the request.
+
+**Clerk:**
+
+1. Navigate to https://dashboard.clerk.com and sign in.
+2. Select your application.
+3. Select "Webhooks".
+4. Select "Add Endpoint".
+5. Use "https://0s2z3dwg7c.execute-api.us-east-1.amazonaws.com/prod/clerkUserWebhook?AppId=UserPlatform" url, changing out "UserPlatform" for the name of your application. This must match the {AppId} variable added to the Parameter Store in AWS.
+6. Select which events you would like handle in your webhook endpoint (e.g. "user.created", "user.deleted", and "user.updated").
+7. Select "Create".
+8. Copy the "Signing Secret" in the bottom right of the "Endpoints" tab.
+9. Paste this secret as the value for your "/clerk-user-webhook/{AppId}/CLERK_USER_EVENT_WEBHOOK_SECRET" environment variable in the Vercel user-webhook application, replacing {AppId} with the AppId of your application.
+
+- Note: This environment variable is endpoint specific. So for your production endpoint, you will have a different "Signing Secret" that will need to be added to your environment variables in the AWS Parameter Store.
+
+1.  Select "Testing" tab of your Clerk webhook endpoint, then select a supported event type to test your webhook. Click "Send Example" to test your webhook event handler.
+2.  Create a new endpoint in Clerk ("Add Endpoint" on "Webhooks" page) with the same settings, except change the endpoint url to your production endpoint.
+
 ## Running MySQL DB locally using Docker
 
 - **Docker:**
